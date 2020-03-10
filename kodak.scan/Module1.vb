@@ -17,7 +17,7 @@ Public Module Module1
     Dim m_szJpegQuality As String = "40"                ' 40 draft, 50 good, 80 better, 90 best, 100 superior
     Dim m_szSharpen As String = "0"                     ' 0 none, 1 normal, 2 high, 3 exaggerated
     Dim m_szOrthogonalRotation As String = "0"          ' 0 none, 1 auto, 2 90, 3 180, 4 270, 5 auto 90, 6 auto 180, 7 auto 270 
-    Dim m_szImageRotation As String = "0"               ' 0 0, 1 auto, 2 none, 90 90, 180 180 , 270 270, 360 360
+    Dim m_szImageRotation As String = "180"               ' 0 0, 1 auto, 2 none, 90 90, 180 180 , 270 270, 360 360
     Dim m_szBlankImageDeletion As String = "2"          ' 1 none, 2 content
     Dim m_szBlankImageDeletionPercent As String = "0"   ' 0 to 100
     Dim m_szScanner As String = "KODAK Scanner: i2000"
@@ -47,9 +47,6 @@ Public Module Module1
 
     End Sub
 
-
-
-
     Public Function All()
 
         RemoveAllFiles()
@@ -62,8 +59,6 @@ Public Module Module1
         End If
 
     End Function
-
-
 
     Private Function CheckScannerStatus() As Boolean
         Try
@@ -126,6 +121,11 @@ Public Module Module1
             Throw New Exception()
         End If
 
+        ExitCode = KODAKSCANSDK.SetImageRotation(m_szImageRotation)
+        If ExitCode <> 0 Then
+            Throw New Exception()
+        End If
+
     End Function
 
     Private Function SelectScanner()
@@ -162,8 +162,8 @@ Public Module Module1
         For index = 0 To aryFi.Length - 1
 
             If index > 0 And (index + 1) Mod 2 = 0 Then
-                img1 = New Bitmap(aryFi.ElementAt(index - 1).FullName, True)
-                img2 = New Bitmap(aryFi.ElementAt(index).FullName, True)
+                img2 = New Bitmap(aryFi.ElementAt(index - 1).FullName, True)
+                img1 = New Bitmap(aryFi.ElementAt(index).FullName, True)
 
                 Dim bmp As New Bitmap(Math.Max(img1.Width, img2.Width), img1.Height + img2.Height)
                 Dim g As Graphics = Graphics.FromImage(bmp)
@@ -175,6 +175,7 @@ Public Module Module1
                 bmp.Save(m_szFilePathName + "\" + imageNameprefix + sayac.ToString() + imageExtension, imageFormat)
                 sayac = sayac + 1
             End If
+
         Next
 
 #Disable Warning BC42105 ' Function doesn't return a value on all code paths
