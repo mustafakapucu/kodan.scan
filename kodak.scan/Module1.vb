@@ -4,24 +4,24 @@ Imports System.Threading
 
 Public Module Module1
     Dim m_szPaperSource As String = "3"                 ' 0 auto, 1 adf front, 2 adf rear, 3 adf duplex, 4 flatbed
-    Dim m_szShowScannerUI As String = "0"               ' 0 off, 1 on
+    'Dim m_szShowScannerUI As String = "0"               ' 0 off, 1 on
     Dim m_szFileName As String = "img"
     Dim m_szFileNumber As String = "0"                  ' 0 to 999
     Dim m_szFilePathName As String = "C:\twain"
     Dim m_szLanguage As String = "0"                    ' 0 English, 1 Chinese Simplified, 2 Chinese Traditional
     Dim m_szScanAs As String = "2"                      ' 0 bw, 1 gray, 2 color
-    Dim m_szDpiResolution As String = "100"             ' 100, 150, 200, 240, 250, 300, 400, 500, 600, 1200
-    Dim m_szDocumentType As String = "1"                ' 0 photo, 1 textwithgraphics, 2 textwithphoto, 3 text
-    Dim m_szFileType As String = "3"                    ' 0 tiff, 4 jpeg
+    'Dim m_szDpiResolution As String = "1200"             ' 100, 150, 200, 240, 250, 300, 400, 500, 600, 1200
+    'Dim m_szDocumentType As String = "0"                ' 0 photo, 1 textwithgraphics, 2 textwithphoto, 3 text
+    Dim m_szFileType As String = "0"                    ' 0 tiff, 4 jpeg
     Dim m_szCompressionType As String = "0"             ' 0 none, 5 g4, 6 jpeg
-    Dim m_szJpegQuality As String = "40"                ' 40 draft, 50 good, 80 better, 90 best, 100 superior
-    Dim m_szSharpen As String = "0"                     ' 0 none, 1 normal, 2 high, 3 exaggerated
-    Dim m_szOrthogonalRotation As String = "0"          ' 0 none, 1 auto, 2 90, 3 180, 4 270, 5 auto 90, 6 auto 180, 7 auto 270 
+    'Dim m_szJpegQuality As String = "40"                ' 40 draft, 50 good, 80 better, 90 best, 100 superior
+    'Dim m_szSharpen As String = "0"                     ' 0 none, 1 normal, 2 high, 3 exaggerated
+    'Dim m_szOrthogonalRotation As String = "0"          ' 0 none, 1 auto, 2 90, 3 180, 4 270, 5 auto 90, 6 auto 180, 7 auto 270 
     Dim m_szImageRotation As String = "180"               ' 0 0, 1 auto, 2 none, 90 90, 180 180 , 270 270, 360 360
-    Dim m_szBlankImageDeletion As String = "2"          ' 1 none, 2 content
-    Dim m_szBlankImageDeletionPercent As String = "0"   ' 0 to 100
+    'Dim m_szBlankImageDeletion As String = "2"          ' 1 none, 2 content
+    'Dim m_szBlankImageDeletionPercent As String = "0"   ' 0 to 100
     Dim m_szScanner As String = "KODAK Scanner: i2000"
-    Dim m_szScannerProfile As String = "1"              ' 1 is typically "Default" profile
+    ' Dim m_szScannerProfile As String = "1"              ' 1 is typically "Default" profile
     Dim m_szOnePage As String = "0"                     ' 0 scan mulitple pages, 1 scan 1 page
     Dim filenumber As Integer
     Dim hWnd As IntPtr = 1
@@ -116,15 +116,41 @@ Public Module Module1
             Throw New Exception()
         End If
 
-        ExitCode = KODAKSCANSDK.SetScannerProfile(m_szScannerProfile)
-        If ExitCode <> 0 Then
-            Throw New Exception()
-        End If
-
         ExitCode = KODAKSCANSDK.SetImageRotation(m_szImageRotation)
         If ExitCode <> 0 Then
             Throw New Exception()
         End If
+
+        ExitCode = KODAKSCANSDK.SetScanAs(m_szScanAs)
+        If ExitCode <> 0 Then
+            Throw New Exception()
+        End If
+
+        'ExitCode = KODAKSCANSDK.SetDPIResolution(m_szDpiResolution)
+        'If ExitCode <> 0 Then
+        '    Throw New Exception()
+        'End If
+
+        ExitCode = KODAKSCANSDK.SetPaperSource(m_szPaperSource)
+        If ExitCode <> 0 Then
+            Throw New Exception()
+        End If
+
+        ExitCode = KODAKSCANSDK.SetFileType(m_szFileType)
+        If ExitCode <> 0 Then
+            Throw New Exception()
+        End If
+
+
+        ExitCode = KODAKSCANSDK.SetCompressionType(m_szCompressionType)
+        If ExitCode <> 0 Then
+            Throw New Exception()
+        End If
+
+        'ExitCode = KODAKSCANSDK.SetJPEGQuality(m_szJpegQuality)
+        'If ExitCode <> 0 Then
+        '    Throw New Exception()
+        'End If
 
     End Function
 
