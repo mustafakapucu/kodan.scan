@@ -25,12 +25,16 @@ Public Module Module1
     Dim m_szOnePage As String = "0"                     ' 0 scan mulitple pages, 1 scan 1 page
     Dim filenumber As Integer
     Dim hWnd As IntPtr = 1
+    Dim imageExtension = ".png"
+    Dim imageNameprefix As String = "ecm00000"
+    Dim imageFormat As Imaging.ImageFormat = Imaging.ImageFormat.Png
 
     Dim KODAKSCANSDK As KODAKSCANSDK.Program
     Private WithEvents MyScanEvent As KODAKSCANSDK.Program
 
 
     Public Sub Main()
+
         Try
             KODAKSCANSDK = New KODAKSCANSDK.Program
             All()
@@ -149,10 +153,7 @@ Public Module Module1
     Function CombineImages()
         Dim img1 As Bitmap
         Dim img2 As Bitmap
-        Dim nameprefix As String
-        Dim sayac As Integer
-        nameprefix = "ecm00000"
-        sayac = 1
+        Dim sayac As Integer = 1
 
         Dim strFileSize As String = ""
         Dim di As New IO.DirectoryInfo(m_szFilePathName)
@@ -171,7 +172,7 @@ Public Module Module1
                 g.DrawImage(img2, 0, img1.Height, img2.Width, img2.Width)
 
                 g.Dispose()
-                bmp.Save("C:\Twain\" + nameprefix + sayac.ToString() + ".png", Imaging.ImageFormat.Png)
+                bmp.Save(m_szFilePathName + "\" + imageNameprefix + sayac.ToString() + imageExtension, imageFormat)
                 sayac = sayac + 1
             End If
         Next
