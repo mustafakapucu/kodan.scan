@@ -48,22 +48,26 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="kodakscansdk">
-      <HintPath>..\..\..\..\Desktop\kodak-scan-sdk\kodakscansdk.dll</HintPath>
+    <Reference Include="kodakscansdk, Version=1.0.4.0, Culture=neutral, PublicKeyToken=a7b68401fafc10e9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>sdks\kodakscansdk.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="TWAIN">
-      <HintPath>..\..\..\..\Desktop\kodak-scan-sdk\TWAIN.dll</HintPath>
+    <Reference Include="TWAIN, Version=2.3.2.0, Culture=neutral, PublicKeyToken=bb17e614a98b1a8a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>sdks\TWAIN.dll</HintPath>
     </Reference>
-    <Reference Include="TWAINCSToolkit">
-      <HintPath>..\..\..\..\Desktop\kodak-scan-sdk\TWAINCSToolkit.dll</HintPath>
+    <Reference Include="TWAINCSToolkit, Version=2.3.2.0, Culture=neutral, PublicKeyToken=315f739341387272, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>sdks\TWAINCSToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +118,14 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="sdks\KODAKSCANSDK.log" />
+    <None Include="sdks\twaindsm.log" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="sdks\kodakscansdk.dll" />
+    <Content Include="sdks\TWAIN.dll" />
+    <Content Include="sdks\TWAINCSToolkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
