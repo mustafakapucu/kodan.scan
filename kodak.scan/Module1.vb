@@ -27,6 +27,7 @@ Public Module Module1
     Dim imageExtension = ".png"
     Dim imageNameprefix As String = "ecm00000"
     Dim imageFormat As Imaging.ImageFormat = Imaging.ImageFormat.Png
+    Dim processName As String = "kodak.scan"
 
     Dim KODAKSCANSDK As KODAKSCANSDK.Program
     Private WithEvents MyScanEvent As KODAKSCANSDK.Program
@@ -39,6 +40,8 @@ Public Module Module1
             All()
             Console.Write(1)
             Environment.Exit(1)
+
+
         Catch ex As Exception
             Console.Write(0)
             Environment.Exit(0)
@@ -48,14 +51,11 @@ Public Module Module1
 
     Public Function All()
 
+        KillOldProcess()
         RemoveAllFiles()
         SelectScanner()
         OpenScanner()
         StartScan()
-
-        '  RunCMDCom("TASKKILL kodak.scan.exe", "/F ", True)
-
-
 
         '    My.Computer.FileSystem.CopyFile(
         '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000001.tif",
@@ -76,21 +76,25 @@ Public Module Module1
         '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000006.tif",
         '"C:\Twain\img000006.tif")
 
-
         If CheckScannerStatus() Then
             CombineImages()
         End If
 
     End Function
 
-    Private Sub RunCMDCom(command As String, arguments As String, permanent As Boolean)
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = " " + If(permanent = True, "/K", "/C") + " " + command + " " + arguments
-        pi.FileName = "cmd.exe"
-        p.StartInfo = pi
-        p.Start()
-    End Sub
+    Private Function KillOldProcess()
+        Dim counter As Integer = 0
+        Dim processlist As List(Of Process) = Process.GetProcesses().ToList().Where(Function(p) p.ProcessName.Equals(processName)).ToList().OrderBy(Function(o) o.TotalProcessorTime).ToList()
+
+        If processlist IsNot Nothing And processlist.Count > 1 Then
+            For Each item As Process In processlist
+                If counter > 0 Then
+                    item.Kill()
+                End If
+                counter = counter + 1
+            Next
+        End If
+    End Function
 
     Private Function CheckScannerStatus() As Boolean
         Try
