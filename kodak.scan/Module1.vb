@@ -53,11 +53,44 @@ Public Module Module1
         OpenScanner()
         StartScan()
 
+        '  RunCMDCom("TASKKILL kodak.scan.exe", "/F ", True)
+
+
+
+        '    My.Computer.FileSystem.CopyFile(
+        '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000001.tif",
+        '"C:\Twain\img000001.tif")
+        '    My.Computer.FileSystem.CopyFile(
+        '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000002.tif",
+        '"C:\Twain\img000002.tif")
+        '    My.Computer.FileSystem.CopyFile(
+        '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000003.tif",
+        '"C:\Twain\img000003.tif")
+        '    My.Computer.FileSystem.CopyFile(
+        '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000004.tif",
+        '"C:\Twain\img000004.tif")
+        '    My.Computer.FileSystem.CopyFile(
+        '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000005.tif",
+        '"C:\Twain\img000005.tif")
+        '    My.Computer.FileSystem.CopyFile(
+        '"C:\Users\mustafa.kapucu\Desktop\New folder\examples\img000006.tif",
+        '"C:\Twain\img000006.tif")
+
+
         If CheckScannerStatus() Then
             CombineImages()
         End If
 
     End Function
+
+    Private Sub RunCMDCom(command As String, arguments As String, permanent As Boolean)
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = " " + If(permanent = True, "/K", "/C") + " " + command + " " + arguments
+        pi.FileName = "cmd.exe"
+        p.StartInfo = pi
+        p.Start()
+    End Sub
 
     Private Function CheckScannerStatus() As Boolean
         Try
@@ -178,7 +211,7 @@ Public Module Module1
     Function CombineImages()
         Dim img1 As Bitmap
         Dim img2 As Bitmap
-        Dim sayac As Integer = 1
+        Dim counter As Integer = 1
 
         Dim strFileSize As String = ""
         Dim di As New IO.DirectoryInfo(m_szFilePathName)
@@ -190,15 +223,23 @@ Public Module Module1
                 img2 = New Bitmap(aryFi.ElementAt(index - 1).FullName, True)
                 img1 = New Bitmap(aryFi.ElementAt(index).FullName, True)
 
-                Dim bmp As New Bitmap(Math.Max(img1.Width, img2.Width), img1.Height + img2.Height)
+                Dim bmp As New Bitmap(img1.Width + img2.Width, Math.Max(img1.Height, img2.Height))
                 Dim g As Graphics = Graphics.FromImage(bmp)
 
                 g.DrawImage(img1, 0, 0, img1.Width, img1.Height)
-                g.DrawImage(img2, 0, img1.Height, img2.Width, img2.Width)
+                g.DrawImage(img2, img1.Width, 0, img2.Width, img2.Height)
+
+
+                'Dim bmp As New Bitmap(Math.Max(img1.Width, img2.Width), img1.Height + img2.Height)
+                'Dim g As Graphics = Graphics.FromImage(bmp)
+
+                'g.DrawImage(img1, 0, 0, img1.Width, img1.Height)
+                'g.DrawImage(img2, 0, img1.Height, img2.Width, img2.Width)
+
 
                 g.Dispose()
-                bmp.Save(m_szFilePathName + "\" + imageNameprefix + sayac.ToString() + imageExtension, imageFormat)
-                sayac = sayac + 1
+                bmp.Save(m_szFilePathName + "\" + imageNameprefix + counter.ToString() + imageExtension, imageFormat)
+                counter = counter + 1
             End If
 
         Next
