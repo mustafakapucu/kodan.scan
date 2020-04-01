@@ -6,7 +6,9 @@ Public Module Module1
     'Dim m_szShowScannerUI As String = "0"               ' 0 off, 1 on
     Dim m_szFileName As String = "img"
     Dim m_szFileNumber As String = "0"                  ' 0 to 999
-    Dim m_szFilePathName As String = "C:\twain"
+    Dim m_szFilePathName As String = ""
+    Dim m_szFileFolderName As String = "\twain"
+    Dim currentDirectoryPath As String = ""
     Dim m_szLanguage As String = "0"                    ' 0 English, 1 Chinese Simplified, 2 Chinese Traditional
     Dim m_szScanAs As String = "2"                      ' 0 bw, 1 gray, 2 color
     'Dim m_szDpiResolution As String = "1200"             ' 100, 150, 200, 240, 250, 300, 400, 500, 600, 1200
@@ -50,6 +52,11 @@ Public Module Module1
     End Sub
 
     Public Function All()
+
+        currentDirectoryPath = IO.Directory.GetCurrentDirectory()
+
+        'set baseFileFullPath
+        m_szFilePathName = currentDirectoryPath.Substring(0, currentDirectoryPath.LastIndexOf("\")) + m_szFileFolderName
 
         KillOldProcess()
         RemoveAllFiles()
